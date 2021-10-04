@@ -42,7 +42,62 @@
   #5) Other Sources
 
 
-#3week <- organizing, merging, amanaging the data./ dplyr Tools
+#3week <- organizing, merging, managing the data./ dplyr Tools
+
+#1)Subsetting and sorting : 복잡한(지저분한)데이터 필요한 값만 정리하기
+#2)Summarizing data : 데이터를 요약해서 살펴보기
+sp <- read.csv("songpagu.csv")
+#데이터 구조 보기
+head(sp, n = 3)  #n을 설정하지 않으면 6개가 나옴
+tail(sp, n = 3)
+summary(sp)
+str(sp)
+quantile(sp$지정일자, na.rm = TRUE)
+quantile(sp$지정일자, probs = c(0.5, 0.75, 0.9), na.rm = TRUE)
+
+table(sp$업태명, useNA = "ifany")
+table(sp$지정일자, sp$업태명)
+
+#NA 결측치 찾기
+sum(is.na(sp$업소명))
+any(is.na(sp$업소명))
+all(sp$허가.신고.번호 > 0)
+
+colSums(is.na(sp))
+all(colSums(is.na(sp)) == 0)
+
+# %in%  : 포함 연산자. 데이터에서 특정 character 찾을 때 
+table(sp$업태명 %in% c("일식"))
+table(sp$업태명 %in% c("일식", "중식"))
+sp[sp$업태명 %in% c("분식", "산업체"), ]
+
+
+object.size(sp)  #bytes 단위로 출력
+print(object.size(sp), units = "Mb")
+
+
+#테이블로 요약하기
+#Cross tabs : xtabs()
+data("UCBAdmissions")
+DF = as.data.frame(UCBAdmissions)
+summary(DF)
+
+xt <- xtabs(Freq ~ Gender + Admit, data = DF)
+xt
+
+#Flat tables : ftable()  
+data("warpbreaks")
+ftable(warpbreaks)
+warpbreaks$replicate <- rep(1:9, len = 54)
+
+xt = xtabs(breaks ~., data = warpbreaks)
+xt
+ftable(xt)
+
+
+#dplyr 패키지 사용하기
+library(dplyr)
+
 
 
 

@@ -40,7 +40,7 @@ x
 apply(x, 2, mean)
 apply(x, 1, sum)
 
-colSums(x)
+colMeans(x)
 rowSums(x)
 
 a <- array(rnorm(2 * 2 * 10), c(2, 2, 10))
@@ -66,7 +66,7 @@ tapply(iris$Sepal.Length, iris$Species, mean, simplify = FALSE)
 
 x <- c(rnorm(10), runif(10), rnorm(10, 1))
 x
-f <- gl(3, 10)
+f <- gl(4, 9)
 split(x, f)
 
 lapply(split(x, f), mean)
@@ -77,6 +77,41 @@ sp
 lapply(sp, function(x) colMeans(x[, c("Sepal.Length", "Sepal.Width")]))
 sapply(sp, function(x) colMeans(x[, c("Sepal.Length", "Sepal.Width")]))
 
+#Debugging
+log(3)
+log(-3)
+
+printmessage <- function(x) {
+  if (x > 0) 
+    print("x is greater than zero") else print("x is less than or equal to zero")
+  invisible(x)
+}
+printmessage(1)
+printmessage(NA)
+
+
+mean(k)
+traceback()
+
+
+sum_to_ten <- function() {
+  sum <- 0
+  for(i in 1:10){
+    sum <- sum + i
+    if(i >= 5) {
+      browser()
+    }
+  }
+}
+sum_to_ten()
+
+
+#trace : 함수에 임의로 브레이크 포인트 넣기
+trace(func, tracer = browser, at = 3)
+
+#recover : 에러 바로잡기
+options(error = recover)
+read.csv("nosuchfile")
 
 
 
@@ -88,10 +123,7 @@ sapply(sp, function(x) colMeans(x[, c("Sepal.Length", "Sepal.Width")]))
 
 
 
-
-
-
-##############################################################################
+l##############################################################################
 test <- list(s20 = c(78, 89, 91, 98, 96, 85 ),
              s21 = c(85, 86, 97, 99, 90),
              s22 = c(98, 96, 89, 90, 93, 85, 92),

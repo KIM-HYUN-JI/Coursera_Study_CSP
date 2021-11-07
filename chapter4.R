@@ -45,11 +45,100 @@ plot(airquality$Ozone, airquality$Wind) #Base R의 plot
 xyplot(Ozone ~ Wind, data = airquality)
 
 str(airquality)
+xyplot(Ozone ~ Wind | Month, data = airquality)
+
 airqualitys <- transform(airquality, Month = factor(Month))
 head(airqualitys, 5)
+
+xyplot(Ozone ~ Wind | Month, data = airquality)
 xyplot(Ozone ~ Wind | Month, data = airqualitys, layout = c(5, 1))
 
 
+p <- xyplot(Ozone ~ Wind, data = airquality)
+print(p)
+
+set.seed(10)
+f <- rep(0:1, each = 50)
+f
+f <- factor(f, labels = c("Group1", "Group2"))
+f
+
+
+library(ggplot2)
+install.packages("ggplot2")
+str(mpg)
+qplot(displ, hwy, data = mpg)
+qplot(displ, hwy, data = mpg, color = drv)
+qplot(displ, hwy, data = mpg, geom = c("point", "smooth"))
+
+qplot(hwy, data = mpg, fill = drv)
+
+#Facets
+qplot(displ, hwy, data = mpg, facets = . ~ drv)
+qplot(hwy, data = mpg, facets = drv ~., binwidth = 2)
+
+#log
+qplot(displ, data = mpg, fill = drv)
+qplot(log(displ), data = mpg, fill = drv)
+qplot(log(displ), data = mpg, geom = "density")
+
+#ggplot2
+str(mpg)
+
+qplot(displ, hwy, data = mpg, facets = . ~ drv, geom = c("point", "smooth"), method = "lm")
+
+g <- ggplot(mpg, aes(displ, hwy))
+summary(g)
+print(g)
+
+p <- g + geom_point()
+print(p)
+
+g + geom_point() + geom_smooth(method = "lm")
+g + geom_point() + geom_smooth(method = "lm") + facet_grid(. ~ drv)
+
+#point 색상, 크기, 투명도 설정
+g + geom_point(aes(color = drv), size = 3, alpha = 1) + geom_smooth(method = "lm") + facet_grid(. ~ drv)
+
+g1 <- ggplot(mpg, aes(displ, hwy))
+g1 + geom_point(color = "steelblue", size = 4, alpha = 1/2)
+
+#labeling
+g1 + geom_point(aes(color = drv), size = 4, alpha = 1/2) + 
+  labs(title = "Coursera MPG data", x = "Displacement", y = "Highway Fuel Economy (miles/gallon)")
+
+#추세선 넣기
+g1 + geom_point(aes(color = drv), size = 4, alpha = 1/2) + 
+  labs(title = "Coursera MPG data", x = "Displacement", y = "Highway Fuel Economy (miles/gallon)") + 
+  geom_smooth(size = 4, linetype = 3, method = "lm", se = FALSE)
+                                                    #se가 TRUE면 표준오차(회색배경) 표시
+#Theme 바꾸기(글꼴, 배경)
+g1 + geom_point(aes(color = drv), size = 4, alpha = 1/2) + 
+  labs(title = "Coursera MPG data", x = "Displacement", y = "Highway Fuel Economy (miles/gallon)") + 
+  geom_smooth(size = 4, linetype = 3, method = "lm", se = FALSE) + 
+  theme_bw(base_family = "Times") + 
+  theme(plot.title = element_text(hjust = 0.5))
+
+dev.off()
+
+#axis 설정하기
+testdat <- data.frame(x = 1:100, y = rnorm(100))
+testdat[50, 2] <- 100 #axis를 벗어나는 데이터
+plot(testdat$x, testdat$y, type = "l", ylim = c(-3, 3)) 
+
+g <- ggplot(testdat, aes(x = x, y= y))
+g + geom_line()
+g + geom_line() + ylim(-3, 3) 
+g + geom_line() + coord_cartesian(ylim = c(-3, 3))
+
+
+#final code
+g1 + geom_point(aes(color = drv), size = 2, alpha = 1/2) + 
+  labs(title = "Coursera MPG data", x = "Displacement", y = "Highway Fuel Economy (miles/gallon)") + 
+  geom_smooth(size = 1, linetype = 2, method = "lm", se = FALSE) + 
+  theme_bw(base_family = "Times") + 
+  theme(plot.title = element_text(hjust = 0.5)) +
+  facet_wrap(. ~ class) 
 
 
 
